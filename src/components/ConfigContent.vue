@@ -14,7 +14,7 @@
         <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
         <el-table-column label="操作" align="center">
             <template #default="{ row }">
-            <el-button type="primary" size="mini" @click="editRow(row)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="editRow(row)"> <router-link to="./edite">编辑</router-link></el-button>
             <el-button type="danger" size="mini" @click="deleteRow(row)">删除</el-button>
             </template>
         </el-table-column>
