@@ -1,19 +1,42 @@
 <!-- About.vue -->
 
 <template>
-    <div>
-      <h2>About Page</h2>
+  <h2>配置管理系统</h2>
+    <div class="container">
+      
       <!-- 页面内容 -->
+      <div class="navbar">
+      <SidebarMenu />
+      </div>
+      <div class="content-container">
+      <!-- 右侧内容 -->
+        <router-view></router-view>
+      </div>
     </div>
   </template>
   
   <script>
+  import SidebarMenu from '../components/SidebarMenu.vue';
   export default {
-    // 组件逻辑
+    components: {
+      SidebarMenu
+    }
   };
   </script>
   
   <style>
-  /* 页面样式 */
+.container {
+  display: flex;
+}
+
+.navbar {
+  width: 200px;
+  padding: 20px;
+}
+
+.content-container {
+  flex: 1;
+  padding: 20px;
+}
   </style>
   
