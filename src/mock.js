@@ -21,6 +21,24 @@ const mockData = {
         // 更多菜单项...
       ],
   },
+  '/api/getFileList':{
+    code: 200,
+    data: [
+        { id: 1, fileName: 'org-java-ddl.sql' },
+        { id: 2, fileName: 'org-java-dml.sql' },
+        { id: 3, fileName: 'org-java.properties' }
+        // 更多文件
+      ]
+  },
+  '/api/getFileDate':{
+    code: 200,
+    data: [
+        { id: 1, content: 'exprot sssfdfsdf,sdfsdf', userName: 'admin', createTime: '2023-11-24' },
+        { id: 2, content: 'exprot sssfdfsdf,sdfsdf', userName: 'admin', createTime: '2023-11-24' },
+        { id: 3, content: 'exprot sssfdfsdf,sdfsdf', userName: 'admin', createTime: '2023-11-24' },
+        // 更多文件
+      ]
+  }
 };
 
 // 注册模拟接口

@@ -14,23 +14,21 @@
         <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
         <el-table-column label="操作" align="center">
             <template #default="{ row }">
-            <el-button type="primary" size="mini" @click="editRow(row)"> <router-link to="./edite">编辑</router-link></el-button>
+            <el-button type="primary" size="mini" @click="editRow(row)"> 编辑</el-button>
             <el-button type="danger" size="mini" @click="deleteRow(row)">删除</el-button>
             </template>
         </el-table-column>
       </el-table>
      <!-- 文件预览弹框 -->
-     <file-viewer
+     <EditeViewer
       v-model:dialogVisible="fileViewerDialogVisible"
-      :fileContent="fileContent"
-      :fileName="fileName"
-    />
+      />
     </div>
   </template>
   
   <script>
   import { mapActions } from 'vuex';
-  import FileViewer from './FileViewer.vue'; 
+  import EditeViewer from './text-x-mysql.vue'
   
   export default {
     data() {
@@ -43,7 +41,7 @@
       };
     },
     components: {
-      FileViewer,
+      EditeViewer,
     },
     methods: {
       loadTableData() {
@@ -65,6 +63,7 @@
 
     editRow(row) {
       // 编辑行的逻辑
+      this.fileViewerDialogVisible = true;
       console.log('编辑行', row);
     },
     deleteRow(row) {
@@ -86,7 +85,6 @@
       this.fileContent = 'CREATE TABLE `user` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;';
       this.fileName = 'dev.sql'
       this.fileViewerDialogVisible = true;
-      console.log('fileViewerDialogVisible should be true:', this.fileViewerDialogVisible);
     },
    
       ...mapActions(['fetchTableData']),
