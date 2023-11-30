@@ -43,6 +43,7 @@
         console.log('点击了列表项，ID为:', id);
         // 设置当前选中的列表项的 ID 和信息
         this.selectedMenuItemId = id;
+        this.$emit('menu-item-clicked', id);
       }
     }
   };

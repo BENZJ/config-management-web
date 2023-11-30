@@ -33,6 +33,7 @@
     data() {
       return {
         showTable: false,
+        tableList: [],
         tableData: [],
         fileViewerDialogVisible: false,
         fileContent: '', // Pass the content of the file
@@ -95,10 +96,11 @@
       // 获取文件列表接口
       async getFileList() {
         try {
-          const res = await get('/api/getFileList',{})
-          console.log('GET请求成功', res);
+          const res = await get('/api/getFileList', {})
+          this.tableList = res.data
+          console.log('获取文件列表', this.tableList);
         } catch (error) {
-          console.error('GET请求失败', error);
+          console.error('获取文件列表失败', error);
         }
       },
 
