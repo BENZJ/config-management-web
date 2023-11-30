@@ -1,8 +1,9 @@
 <template>
 
   <div>
-    <div style="text-align: right;">
-      <p>当前的 ID 值是: {{ this.id }}</p>
+    <p>当前的 ID 值是: {{ this.id }}</p>
+    <!-- <div style="text-align: right;">
+      
       <b>dev.sql</b>
       <el-button v-show="!showTable"  size="default"  @click="loadTableData" type="primary">展开</el-button>
       <el-button v-show="showTable"  size="default" @click="toggleTable" type="danger">隐藏</el-button>
@@ -19,7 +20,7 @@
           <el-button type="danger" size="mini" @click="deleteRow(row)">删除</el-button>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
     <!-- 文件预览弹框 -->
     <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" />
   </div>
