@@ -1,35 +1,34 @@
 <template>
-    
-    <div>
-        <div style="text-align: right;">
-        <b>dev.sql</b>
-        <el-button  v-show="!showTable" @click="loadTableData" type="primary">展开</el-button>
-        <el-button v-show="showTable"  @click="toggleTable" type="danger">隐藏</el-button>
-        <el-button  @click="previewFile" type="danger">预览</el-button>
-        </div>
-      <el-table :data="tableData" v-show="showTable" style="width: 100%" ref="myTable">
-        <el-table-column prop="id" label="编号"></el-table-column>
-        <el-table-column prop="content" label="内容"></el-table-column>
-        <el-table-column prop="modifier" label="修改人"></el-table-column>
-        <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
-        <el-table-column label="操作" align="center">
-            <template #default="{ row }">
-            <el-button type="primary" size="mini" @click="editRow(row)"> 编辑</el-button>
-            <el-button type="danger" size="mini" @click="deleteRow(row)">删除</el-button>
-            </template>
-        </el-table-column>
-      </el-table>
-     <!-- 文件预览弹框 -->
-     <EditeViewer
-      v-model:dialogVisible="fileViewerDialogVisible"
-      />
+
+  <div>
+    <div style="text-align: right;">
+      <b>dev.sql</b>
+      <el-button v-show="!showTable" @click="loadTableData" type="primary">展开</el-button>
+      <el-button v-show="showTable" @click="toggleTable" type="danger">隐藏</el-button>
+      <el-button @click="previewFile" type="danger">预览</el-button>
     </div>
-  </template>
-  
-  <script>
+    <el-table :data="tableData" v-show="showTable" style="width: 100%" ref="myTable">
+      <el-table-column prop="id" label="编号"></el-table-column>
+      <el-table-column prop="content" label="内容"></el-table-column>
+      <el-table-column prop="modifier" label="修改人"></el-table-column>
+      <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
+      <el-table-column label="操作" align="center">
+        <template #default="{ row }">
+          <el-button type="primary" size="mini" @click="editRow(row)"> 编辑</el-button>
+          <el-button type="danger" size="mini" @click="deleteRow(row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- 文件预览弹框 -->
+    <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" />
+  </div>
+</template>
+
+<script>
   import { mapActions } from 'vuex';
-  import EditeViewer from './text-x-mysql.vue'
-  
+  import EditeViewer from './text-x-mysql.vue';
+  import { get } from '@/utils/http';
+
   export default {
     data() {
       return {
@@ -43,6 +42,10 @@
     components: {
       EditeViewer,
     },
+    mounted() {
+      // 在组件挂载后发送请求获取菜单列表
+      this.getFileList();
+    },
     methods: {
       loadTableData() {
         this.tableData = [
@@ -51,47 +54,60 @@
           // ... 其他数据
         ];
         this.showTable = true;
-  
+
         // 使用 $nextTick 延迟执行 doLayout 方法
         this.$nextTick(() => {
           this.$refs.myTable.doLayout();
         });
       },
+
       toggleTable() {
         this.showTable = !this.showTable;
       },
 
-    editRow(row) {
-      // 编辑行的逻辑
-      this.fileViewerDialogVisible = true;
-      console.log('编辑行', row);
-    },
-    deleteRow(row) {
-      // 删除行的逻辑
-      const index = this.tableData.indexOf(row);
-      if (index !== -1) {
-        this.tableData.splice(index, 1);
-      }
+      editRow(row) {
+        // 编辑行的逻辑
+        this.fileViewerDialogVisible = true;
+        console.log('编辑行', row);
+      },
 
-      // 使用 $nextTick 延迟执行 doLayout 方法
-      this.$nextTick(() => {
-        this.$refs.myTable.doLayout();
-      });
-    },
+      deleteRow(row) {
+        // 删除行的逻辑
+        const index = this.tableData.indexOf(row);
+        if (index !== -1) {
+          this.tableData.splice(index, 1);
+        }
 
-    previewFile() {
-      // 调用接口获取文件内容
-      // 模拟文件内容
-      this.fileContent = 'CREATE TABLE `user` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;';
-      this.fileName = 'dev.sql'
-      this.fileViewerDialogVisible = true;
-    },
-   
+        // 使用 $nextTick 延迟执行 doLayout 方法
+        this.$nextTick(() => {
+          this.$refs.myTable.doLayout();
+        });
+      },
+
+      previewFile() {
+        // 调用接口获取文件内容
+        // 模拟文件内容
+        this.fileContent = 'CREATE TABLE `user` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;';
+        this.fileName = 'dev.sql'
+        this.fileViewerDialogVisible = true;
+      },
+
+      // 获取文件列表接口
+      async getFileList() {
+        try {
+          const res = await get('/api/getFileList',{})
+          console.log('GET请求成功', res);
+        } catch (error) {
+          console.error('GET请求失败', error);
+        }
+      },
+
+
       ...mapActions(['fetchTableData']),
     },
   };
-  </script>
-  
-  <style>
+</script>
+
+<style>
   /* 样式可以根据需要自行调整 */
-  </style>
+</style>

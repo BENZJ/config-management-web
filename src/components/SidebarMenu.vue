@@ -1,26 +1,27 @@
 <!-- SidebarMenu.vue -->
 
 <template>
-    <div class="sidebar-menu">
-        <h1>迭代列表</h1>
-    </div>
-    <div class="sidebar-menu">
-      <ul>
-        <ul>
-            <li v-for="menuItem in menuList" :key="menuItem.id">
-              {{ menuItem.name }}
-            </li>
-        </ul>
-      </ul>
-    </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
+  <div class="sidebar-menu">
+    <h1>迭代列表</h1>
+  </div>
+  <div class="sidebar-menu">
+    <ul>
+      <li v-for="menuItem in menuList" :key="menuItem.id" @click="handleMenuItemClick(menuItem.id)"
+        :class="{ 'highlighted': menuItem.id === selectedMenuItemId }">
+        {{ menuItem.name }}
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+  // import axios from 'axios';
+  import { get } from '@/utils/http';
   export default {
     data() {
       return {
-        menuList: []
+        menuList: [],
+        selectedMenuItemId: null
       };
     },
     mounted() {
@@ -29,41 +30,48 @@
     },
     methods: {
       async fetchMenuList() {
-      axios.get('/api/example')
-        .then(response => {
-          // 请求成功处理
-          this.menuList = response.data; // 将获取的数据保存到 menuList 中
-          console.log(response.data);
-        })
-        .catch(error => {
-          // 请求失败处理
-          console.error('Error:', error);
-        });
+        try {
+          const res = await get('/api/example', {})
+          this.menuList = res.data;
+          console.log('获取迭代列表成功', this.menuList);
+        } catch (error) {
+          console.error('GET请求失败', error);
+        }
+      },
+      handleMenuItemClick(id) {
+        // 在这里处理点击列表项的逻辑，你可以使用id执行相应的操作
+        console.log('点击了列表项，ID为:', id);
+        // 设置当前选中的列表项的 ID 和信息
+        this.selectedMenuItemId = id;
       }
     }
   };
-  </script>
-  
-  <style scoped>
+</script>
+
+<style scoped>
   /* 样式可以根据需求自行定义 */
   .sidebar-menu {
     width: 200px;
     background-color: #f0f0f0;
   }
-  
+
   ul {
     list-style-type: none;
     padding: 0;
   }
-  
+
   li {
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
   }
-  
+
   li:hover {
     background-color: #ddd;
   }
-  </style>
-  
+
+  /* 新增样式，用于高亮显示 */
+  .highlighted {
+    background-color: #aaf;
+  }
+</style>
