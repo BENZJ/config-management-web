@@ -13,70 +13,83 @@ const mock = new MockAdapter(instance);
 
 // get方法的模拟数据
 const mockData = [
-  //获取迭代列表
   {
-    url: '/api/example', params: {}, data: {
+    url: '/api/example',
+    params: {},
+    data: {
       code: 200,
       data: [
         { id: 1, name: '2023-11-24迭代' },
         { id: 2, name: '2023-10-24迭代' },
         { id: 3, name: '2023-09-24迭代' },
+        { id: 4, name: '2023-08-29迭代' },
       ],
-    }
+    },
   },
-
-  //获取文件列表
   {
-    url: '/api/getFileList', params: {}, data: {
-      code: 200,
-      data: [
-        { id: 1, fileName: 'org-java-ddl.sql' },
-        { id: 2, fileName: 'org-java-dml.sql' },
-        { id: 3, fileName: 'org-java.properties' }
-      ]
-    }
+    // getFileList 配置使用函数判断入参
+    url: '/api/getFileList',
+    params: (config) => config.params.id,
+    data: (config) => {
+      const id = config.params.id;
+      if (id === 1) {
+        return {
+          code: 200,
+          data: [
+            { id: 1, fileName: 'org-java-ddl.sql' },
+            { id: 2, fileName: 'org-java-dml.sql' },
+            { id: 3, fileName: 'org-java.properties' },
+          ],
+        };
+      } else if (id === 2) {
+        return {
+          code: 200,
+          data: [
+            { id: 1, fileName: 'org-java-ddl.sql' },
+            { id: 2, fileName: 'org-java-dml.sql' },
+          ],
+        };
+      } else {
+        // 其他情况的处理
+        return {
+          code: 200,
+          data: [
+            { id: 1, fileName: 'org-java-ddl.sql' },
+          ],
+        };
+      }
+    },
   },
-
-  //获取文件列表
   {
-    url: '/api/getFileDate', params: {id: 1}, data: {
+    url: '/api/getFileDate',
+    params: { id: 1 },
+    data: {
       code: 200,
       data: [
         { id: 1, content: 'exprot sssfdfsdf,sdfsdf', userName: 'admin', createTime: '2023-11-24' },
         { id: 2, content: 'exprot sssfdfsdf,sdfsdf', userName: 'admin', createTime: '2023-11-24' },
         { id: 3, content: 'exprot sssfdfsdf,sdfsdf', userName: 'admin', createTime: '2023-11-24' },
-        // 更多文件
-      ]
-    }
+      ],
+    },
   },
   {
-    url: '/api/getFileDate', params: {id: 2}, data: {
+    url: '/api/getFileDate',
+    params: { id: 2 },
+    data: {
       code: 200,
       data: [
         { id: 1, content: '文件2', userName: 'admin', createTime: '2023-11-24' },
         { id: 2, content: '文件2', userName: 'admin', createTime: '2023-11-24' },
         { id: 3, content: '文件2', userName: 'admin', createTime: '2023-11-24' },
-        // 更多文件
-      ]
-    }
-  }
+      ],
+    },
+  },
+];
 
-]
-
-// const mockPostDate=[
-//   {
-//     url: '/modify', params: {}, data: {
-//       code: 200,
-//       data: [
-//         { id: 1, name: '2023-11-24迭代' },
-//     }
-// }
-// ]
-
-console.log('mockData:',mockData)
 // 注册模拟接口
-mockData.forEach ( item=>{
-  console.log('item:',item)
-  mock.onGet(item.url, item.params).reply(item.data.code, item.data.data);
+mockData.forEach(item => {
+  mock.onGet(item.url, item.params).reply((config) => {
+    return [typeof item.data === 'function' ? item.data(config).code : item.data.code, typeof item.data === 'function' ? item.data(config).data: item.data.data];
+  });
 });
 export default app;

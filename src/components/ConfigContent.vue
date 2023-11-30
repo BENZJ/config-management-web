@@ -2,10 +2,11 @@
 
   <div>
     <div style="text-align: right;">
+      <p>当前的 ID 值是: {{ this.id }}</p>
       <b>dev.sql</b>
-      <el-button v-show="!showTable" @click="loadTableData" type="primary">展开</el-button>
-      <el-button v-show="showTable" @click="toggleTable" type="danger">隐藏</el-button>
-      <el-button @click="previewFile" type="danger">预览</el-button>
+      <el-button v-show="!showTable"  size="default"  @click="loadTableData" type="primary">展开</el-button>
+      <el-button v-show="showTable"  size="default" @click="toggleTable" type="danger">隐藏</el-button>
+      <el-button @click="previewFile"   size="default" type="danger">预览</el-button>
     </div>
     <el-table :data="tableData" v-show="showTable" style="width: 100%" ref="myTable">
       <el-table-column prop="id" label="编号"></el-table-column>
@@ -30,6 +31,9 @@
   import { get } from '@/utils/http';
 
   export default {
+    props: {
+      id: Number
+    },
     data() {
       return {
         showTable: false,
@@ -45,7 +49,15 @@
     },
     mounted() {
       // 在组件挂载后发送请求获取菜单列表
-      this.getFileList();
+      this.getFileList(this.id);
+    },
+    watch: {
+      // 监听 id 的变化，变化时重新调用 getFileList 方法
+      id: function (newId, oldId) {
+        if (newId !== oldId) {
+          this.getFileList(newId);
+        }
+      }
     },
     methods: {
       loadTableData() {
@@ -94,9 +106,10 @@
       },
 
       // 获取文件列表接口
-      async getFileList() {
+      async getFileList(id) {
         try {
-          const res = await get('/api/getFileList', {})
+          console.log('文件列表获取id为', id);
+          const res = await get('/api/getFileList', { 'id': id })
           this.tableList = res.data
           console.log('获取文件列表', this.tableList);
         } catch (error) {

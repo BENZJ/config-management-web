@@ -26,9 +26,18 @@
     },
     mounted() {
       // 在组件挂载后发送请求获取菜单列表
-      this.fetchMenuList();
+      this.fetchMenuListAndHandleClick();
     },
     methods: {
+      async fetchMenuListAndHandleClick() {
+        // 在组件挂载后发送请求获取菜单列表
+        await this.fetchMenuList();
+
+        // 如果 menuList 不为空，则取第一个菜单
+        if (this.menuList.length > 0) {
+          this.handleMenuItemClick(this.menuList[0].id);
+        }
+      },
       async fetchMenuList() {
         try {
           const res = await get('/api/example', {})
@@ -45,7 +54,8 @@
         this.selectedMenuItemId = id;
         this.$emit('menu-item-clicked', id);
       }
-    }
+    },
+    emits: ['menu-item-clicked'] // 添加 emits 选项声明自定义事件
   };
 </script>
 

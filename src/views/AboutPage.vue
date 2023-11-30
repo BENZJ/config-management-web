@@ -10,7 +10,7 @@
     </div>
     <div class="content-container">
       <!-- 右侧内容 -->
-      <router-view :to="{ name: 'ConfigContent', params: { id: selectedItemId } }"></router-view>
+      <router-view :id="selectedItemId"></router-view>
     </div>
   </div>
 </template>
@@ -30,6 +30,7 @@
       handleMenuItemClicked(id) {
         // 在这里处理点击列表项后的逻辑，你可以使用 id 执行相应的操作
         console.log('About.vue 接收到菜单项点击事件，ID为:', id);
+        this.selectedItemId = id;
         // 设置当前选中的列表项的 ID
       },
     },
