@@ -61,29 +61,40 @@ const mockData = [
     },
   },
   {
+    // getFileList 配置使用函数判断入参
     url: '/api/getFileDate',
-    params: { id: 1 },
-    data: {
-      code: 200,
-      data: [
-        { id: 1, content: 'exprot sssfdfsdf,sdfsdf', userName: 'admin', createTime: '2023-11-24' },
-        { id: 2, content: 'exprot sssfdfsdf,sdfsdf', userName: 'admin', createTime: '2023-11-24' },
-        { id: 3, content: 'exprot sssfdfsdf,sdfsdf', userName: 'admin', createTime: '2023-11-24' },
-      ],
+    params: (config) => config.params.fileId,
+    data: (config) => {
+      const fileId = config.params.fileId;
+      if (fileId === 1) {
+        return {
+          code: 200,
+          data:  [
+            { id: 1, content: '文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1', modifier: 'admin', modifyTime: '2023-11-24' },
+            { id: 2, content: '文件1', modifier: 'admin', modifyTime: '2023-11-24' }
+          ],
+        };
+      } else if (fileId === 2) {
+        return {
+          code: 200,
+          data:[
+            { id: 1, content: '文件2', modifier: 'admin', modifyTime: '2023-11-24' },
+            { id: 2, content: '文件2', modifier: 'admin', modifyTime: '2023-11-24' },
+            { id: 3, content: '文件2', modifier: 'admin', modifyTime: '2023-11-24' },
+          ],
+        };
+      } else {
+        // 其他情况的处理
+        return {
+          code: 200,
+          data: [
+            { id: 1, content: '文件xxx', modifier: 'admin', modifyTime: '2023-11-24' },
+            { id: 2, content: '文件xxx', modifier: 'admin', modifyTime: '2023-11-24' }
+          ],
+        };
+      }
     },
-  },
-  {
-    url: '/api/getFileDate',
-    params: { id: 2 },
-    data: {
-      code: 200,
-      data: [
-        { id: 1, content: '文件2', userName: 'admin', createTime: '2023-11-24' },
-        { id: 2, content: '文件2', userName: 'admin', createTime: '2023-11-24' },
-        { id: 3, content: '文件2', userName: 'admin', createTime: '2023-11-24' },
-      ],
-    },
-  },
+  }
 ];
 
 // 注册模拟接口
