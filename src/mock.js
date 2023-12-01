@@ -70,7 +70,7 @@ const mockData = [
         return {
           code: 200,
           data:  [
-            { id: 1, content: '文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1', modifier: 'admin', modifyTime: '2023-11-24' },
+            { id: 1, content: '文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1\n \t文件1文件1文件1文件1文件1', modifier: 'admin', modifyTime: '2023-11-24' },
             { id: 2, content: '文件1', modifier: 'admin', modifyTime: '2023-11-24' }
           ],
         };

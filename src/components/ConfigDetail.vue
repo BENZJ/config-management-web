@@ -10,15 +10,15 @@
       <el-table-column prop="id" label="编号"></el-table-column>
       <el-table-column label="内容">
         <template #default="{ row }">
-        <div>{{ truncateText(row.content, 4) }}</div>
+        <div>{{ truncateText(row.content, 10) }}</div>
       </template>
       </el-table-column>
       <el-table-column prop="modifier" label="修改人"></el-table-column>
       <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
       <el-table-column label="操作" align="center">
         <template #default="{ row }">
-          <el-button type="primary" size="mini" @click="editRow(row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="deleteRow(row)">删除</el-button>
+          <el-icon  size="20" @click="editRow(row)"><Edit /></el-icon>
+          <el-icon  size="20" @click="deleteRow(row)"><Delete /></el-icon>
         </template>
       </el-table-column>
     </el-table>
@@ -62,6 +62,7 @@ export default {
     editRow(row) {
       // 处理编辑行的逻辑
       console.log('编辑行', row);
+      this.$emit('open-edite-viewer', { content: row.content });
     },
     deleteRow(row) {
       // 处理删除行的逻辑

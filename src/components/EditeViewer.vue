@@ -1,8 +1,7 @@
 <template>
  <el-dialog v-model="internalVisible" title="文件预览" width="80%" :style="{ height: '600px' }" @close="closeDialog">
-    <codemirror v-model="code"
+    <codemirror v-model:value="code"
      :options="cmOption" 
-     border
      :height="400" 
      class="CodeMirror"
      />
@@ -14,7 +13,7 @@
 </template>
 
 <script>
-import dedent from 'dedent';
+// import dedent from 'dedent';
 // import CodeMirror from "codemirror";
 import Codemirror from "codemirror-editor-vue3";
 import 'codemirror/theme/solarized.css';
@@ -23,6 +22,8 @@ export default {
   name: 'EditeViewer',
   props: {
     dialogVisible: Boolean,
+    fileContent: String,
+    recordId: Number,
   },
   components: {
     Codemirror,
@@ -33,6 +34,7 @@ export default {
       internalVisible: false, // 使用额外的变量存储对话框的状态
       cmOption: {
         tabSize: 4,
+        autorefresh: true,
         styleActiveLine: true,
         lineNumbers: false,
         // gutters: ["CodeMirror-line", "my-custom-gutter"],
@@ -40,22 +42,7 @@ export default {
         mode: 'text/x-mysql',
         theme: 'solarized light',
       },
-      code: dedent`
-        -- SQL模式的CodeMirror
-        SELECT SQL_NO_CACHE DISTINCT
-            @var1 AS \`val1\`, @'val2', @global.'sql_mode',
-            1.1 AS \`float_val\`, .14 AS \`another_float\`, 0.09e3 AS \`int_with_esp\`,
-            0xFA5 AS \`hex\`, x'fa5' AS \`hex2\`, 0b101 AS \`bin\`, b'101' AS \`bin2\`,
-            DATE '1994-01-01' AS \`sql_date\`, { T "1994-01-01" } AS \`odbc_date\`,
-            'my string', _utf8'your string', N'her string',
-                TRUE, FALSE, UNKNOWN
-          FROM DUAL
-          -- '--'后面需要空格
-          # 单行注释
-          /* 多行
-          注释! */
-          LIMIT 1 OFFSET 0;
-      `,
+      code: '', // 使用 code 数据属性存储文件内容
     };
   },
   watch: {
@@ -63,6 +50,15 @@ export default {
       // 在 dialogVisible 发生变化时更新额外的变量
       this.internalVisible = val;
     },
+    fileContent(newContent) {
+      // 当 fileContent 变化时更新 code
+      this.code = newContent;
+    },
+    // recordId(newRecordId) {
+    //   // 根据新的 recordId 获取内容（如果需要）
+    //   // 你可能需要在这里进行 API 调用以获取内容
+    //   // 并相应地更新 this.code
+    // },
   },
   methods:{
     closeDialog() {
