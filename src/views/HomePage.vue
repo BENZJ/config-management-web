@@ -3,7 +3,7 @@
 <template>
     <div>
       <h2>Home Page</h2>
-      <router-link to="/about">Go to About Page</router-link>
+      <router-link to="/about">前往配置页</router-link>
       <!-- 页面内容 -->
     </div>
   </template>
