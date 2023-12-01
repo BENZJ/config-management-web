@@ -3,9 +3,12 @@
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <b>{{ fileName }}</b>
       <div>
-        <el-button v-show="!showTable" size="default" @click="loadTableData" type="primary">展开</el-button>
-        <el-button v-show="showTable" size="default" @click="toggleTable" type="danger">隐藏</el-button>
-        <el-button @click="previewFile" size="default" type="danger">预览</el-button>
+        <el-icon  v-show="!showTable" size="default" @click="loadTableData"><FolderOpened /></el-icon>
+        <el-icon v-show="showTable" size="default" @click="toggleTable" ><FolderRemove /></el-icon>
+        <el-icon @click="previewFile" size="default"><Document /></el-icon>
+        <!-- <el-button v-show="!showTable" size="default" @click="loadTableData" type="primary">展开</el-button> -->
+        <!-- <el-button v-show="showTable" size="default" @click="toggleTable" type="danger">隐藏</el-button> -->
+        <!-- <el-button @click="previewFile" size="default" type="danger">预览</el-button> -->
       </div>
     </div>
 

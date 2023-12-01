@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div style="text-align: right;;  border: 1px solid #FFF; ">
+      <el-icon style="margin-right: 10px;" size="25" default="添加文件"><DocumentAdd /></el-icon>
+      <el-icon  style="margin-right: 10px;" size="25" default="打包下载"><Download /></el-icon>
+    </div>
     <!-- <p>当前的 ID 值是: {{ this.id }}</p> -->
     <div v-for="file in tableList" :key="file.id" class="file-list-item">
       <ConfigDetail :fileId=file.id :fileName="file.fileName" @open-edite-viewer="openEditeViewer" />
@@ -60,7 +64,7 @@ export default {
       }
     },
 
-    openEditeViewer (data) {
+    openEditeViewer(data) {
       console.log('监听到打开弹窗事件:', data);
       this.currentFileContent = data.content; // 更新当前文件内容
       this.fileViewerDialogVisible = true; // 显示 EditeViewer.vue 组件的弹窗

@@ -2,7 +2,7 @@
 
 <template>
   <div class="sidebar-menu">
-    <h1>迭代列表</h1>
+    <h1>迭代列表 <el-icon size="20"><Plus /></el-icon></h1>
   </div>
   <div class="sidebar-menu">
     <ul>
