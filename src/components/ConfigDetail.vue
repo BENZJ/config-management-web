@@ -19,10 +19,15 @@
     </div>
 
     <el-table :data="tableData" v-show="showTable" style="width: 100%" ref="myTable">
-      <el-table-column prop="id" label="编号"></el-table-column>
+      <!-- <el-table-column prop="id" label="编号"></el-table-column> -->
       <el-table-column label="内容">
         <template #default="{ row }">
           <div>{{ truncateText(row.content, 10) }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注">
+        <template #default="{ row }">
+          <div>{{ truncateText(row.remark, 10) }}</div>
         </template>
       </el-table-column>
       <el-table-column prop="modifier" label="修改人"></el-table-column>
@@ -90,7 +95,7 @@ export default {
     editRow(row) {
       // 处理编辑行的逻辑
       console.log('编辑行', row);
-      this.$emit('open-edite-viewer', { content: row.content, rowId: row.id, rowModifier: row.modifier });
+      this.$emit('open-edite-viewer', { content: row.content, rowId: row.id, rowModifier: row.modifier ,rowRemark: row.remark});
     },
     async deleteRow(row) {
       // 处理删除行的逻辑

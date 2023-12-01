@@ -38,6 +38,7 @@ export default {
   data() {
     return {
       formData: {
+        recordId: '',
         personName: '',
         remark: '',
         // 新添加的额外参数
@@ -62,6 +63,15 @@ export default {
     dialogVisible(val) {
       // 在 dialogVisible 发生变化时更新额外的变量
       this.internalVisible = val;
+    },
+    recordId(val){
+      this.formData.recordId = val;
+    },
+    recordRemark(val){
+      this.formData.remark = val;
+    },
+    recordName(val){
+      this.formData.personName = val;
     },
     fileContent(newContent) {
       // 当 fileContent 变化时更新 code

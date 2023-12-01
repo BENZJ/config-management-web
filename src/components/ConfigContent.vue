@@ -9,7 +9,7 @@
       <ConfigDetail :fileId=file.id :fileName="file.fileName" @open-edite-viewer="openEditeViewer" />
     </div>
     <!-- 文件预览弹框 -->
-    <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" :fileContent="currentFileContent" />
+    <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" :fileContent="currentFileContent" :recordId="recordId"  :recordName="recordUser" :recordRemark="recordRemark"/>
   </div>
 </template>
 
@@ -31,6 +31,9 @@ export default {
       fileViewerDialogVisible: false,
       fileContent: '', // Pass the content of the file
       fileName: '', // Pass the name of the file
+      recordId: Number,
+      recordUser: String,
+      recordRemark: String,
     };
   },
   components: {
@@ -67,6 +70,9 @@ export default {
     openEditeViewer(data) {
       console.log('监听到打开弹窗事件:', data);
       this.currentFileContent = data.content; // 更新当前文件内容
+      this.recordId = data.rowId;
+      this.recordUser = data.rowModifier;
+      this.recordRemark = data.rowRemark;
       this.fileViewerDialogVisible = true; // 显示 EditeViewer.vue 组件的弹窗
     },
 
