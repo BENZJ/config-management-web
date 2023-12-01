@@ -96,11 +96,55 @@ const mockData = [
     },
   }
 ];
+// post方法的模拟数据
+const mockDataPost = [
+  {
+    url: '/api/createIteration',
+    params: (config) => {
+      const iterationName = config.data ? JSON.parse(config.data).iterationName : null;
+      return { iterationName };
+    },
+    data: (config) => {
+      const iterationName = config.data ? JSON.parse(config.data).iterationName : null;
+      return {
+        code: 200,
+        data: {
+          iterationName: iterationName,
+          // 其他数据字段...
+        },
+      };
+    },
+  },
+  {
+    url: '/api/ttt',
+    params: (config) => {
+      const iterationName = config.data ? JSON.parse(config.data).iterationName : null;
+      return { iterationName };
+    },
+    data: (config) => {
+      const iterationName = config.data ? JSON.parse(config.data).iterationName : null;
+      return {
+        code: 200,
+        data: {
+          iterationName: iterationName,
+          // 其他数据字段...
+        },
+      };
+    },
+  },
+]
 
 // 注册模拟接口
 mockData.forEach(item => {
   mock.onGet(item.url, item.params).reply((config) => {
     return [typeof item.data === 'function' ? item.data(config).code : item.data.code, typeof item.data === 'function' ? item.data(config).data: item.data.data];
+  });
+});
+mockDataPost.forEach(item => {
+  console.log("mock" , item)
+  mock.onPost(item.url, item.params).reply(function (config) {
+    return [item.data(config).code, item.data(config).data];
+    // return [typeof item.data === 'function'? item.data(config).code : item.data.code, typeof item.data === 'function'? item.data(config).data: item.data.data];
   });
 });
 export default app;
