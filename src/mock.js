@@ -142,7 +142,7 @@ mockData.forEach(item => {
 });
 mockDataPost.forEach(item => {
   console.log("mock" , item)
-  mock.onPost(item.url, item.params).reply(function (config) {
+  mock.onPost(item.ur).reply(function (config) {
     return [item.data(config).code, item.data(config).data];
     // return [typeof item.data === 'function'? item.data(config).code : item.data.code, typeof item.data === 'function'? item.data(config).data: item.data.data];
   });
