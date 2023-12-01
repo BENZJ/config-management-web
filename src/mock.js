@@ -69,7 +69,7 @@ const mockData = [
       if (fileId === 1) {
         return {
           code: 200,
-          data:  [
+          data: [
             { id: 1, content: '文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1文件1\n \t文件1文件1文件1文件1文件1', modifier: 'admin', modifyTime: '2023-11-24' },
             { id: 2, content: '文件1', modifier: 'admin', modifyTime: '2023-11-24' }
           ],
@@ -77,7 +77,7 @@ const mockData = [
       } else if (fileId === 2) {
         return {
           code: 200,
-          data:[
+          data: [
             { id: 1, content: '文件2', modifier: 'admin', modifyTime: '2023-11-24' },
             { id: 2, content: '文件2', modifier: 'admin', modifyTime: '2023-11-24' },
             { id: 3, content: '文件2', modifier: 'admin', modifyTime: '2023-11-24' },
@@ -94,7 +94,22 @@ const mockData = [
         };
       }
     },
-  }
+  },
+  {
+    // 删除行
+    url: '/api/deleteRow',
+    params: (config) => config.params.id,
+    data: (config) => {
+      const id = config.params.id;
+      return {
+        code: 200,
+        data: [
+          { id: id}
+        ],
+      };
+
+    }
+  },
 ];
 // post方法的模拟数据
 const mockDataPost = [
@@ -137,11 +152,11 @@ const mockDataPost = [
 // 注册模拟接口
 mockData.forEach(item => {
   mock.onGet(item.url, item.params).reply((config) => {
-    return [typeof item.data === 'function' ? item.data(config).code : item.data.code, typeof item.data === 'function' ? item.data(config).data: item.data.data];
+    return [typeof item.data === 'function' ? item.data(config).code : item.data.code, typeof item.data === 'function' ? item.data(config).data : item.data.data];
   });
 });
 mockDataPost.forEach(item => {
-  console.log("mock" , item)
+  console.log("mock", item)
   mock.onPost(item.ur).reply(function (config) {
     return [item.data(config).code, item.data(config).data];
     // return [typeof item.data === 'function'? item.data(config).code : item.data.code, typeof item.data === 'function'? item.data(config).data: item.data.data];

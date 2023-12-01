@@ -1,7 +1,7 @@
 <!-- About.vue -->
 
 <template>
-  <h2>配置管理系统</h2>
+  <h2>配置管理</h2>
   <div class="container">
 
     <!-- 页面内容 -->
