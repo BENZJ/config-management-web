@@ -1,15 +1,21 @@
 <template>
   <div>
     <div style="text-align: right;;  border: 1px solid #FFF; ">
-      <el-icon style="margin-right: 10px;" size="25" default="添加文件"><DocumentAdd /></el-icon>
-      <el-icon  style="margin-right: 10px;" size="25" default="打包下载"><Download /></el-icon>
+      <el-icon style="margin-right: 10px;" size="25" default="添加文件">
+        <DocumentAdd />
+      </el-icon>
+      <el-icon style="margin-right: 10px;" size="25" default="打包下载">
+        <Download />
+      </el-icon>
     </div>
     <!-- <p>当前的 ID 值是: {{ this.id }}</p> -->
     <div v-for="file in tableList" :key="file.id" class="file-list-item">
-      <ConfigDetail :fileId=file.id :fileName="file.fileName" @open-edite-viewer="openEditeViewer" />
+      <ConfigDetail :ref="configDetailRefs[file.id]" :fileId=file.id :fileName="file.fileName"
+        @open-edite-viewer="openEditeViewer" />
     </div>
     <!-- 文件预览弹框 -->
-    <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" :fileContent="currentFileContent" :recordId="recordId"  :recordName="recordUser" :recordRemark="recordRemark"/>
+    <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" :fileId="fileId" :fileContent="currentFileContent" :recordId="rowId" :recordName="handerUser" :recordRemark="remark"
+      @edite-row="reloadFileDetail" />
   </div>
 </template>
 
@@ -31,9 +37,11 @@ export default {
       fileViewerDialogVisible: false,
       fileContent: '', // Pass the content of the file
       fileName: '', // Pass the name of the file
-      recordId: Number,
-      recordUser: String,
-      recordRemark: String,
+      configDetailRefs: {},
+      fileId: Number,
+      handerUser: String,
+      remark: String,
+      rowId: Number,
     };
   },
   components: {
@@ -62,6 +70,15 @@ export default {
         console.log('文件列表内容', res.data);
         this.tableList = res.data
         console.log('获取文件列表', this.tableList);
+
+        // 在获取文件列表后，为每个文件动态创建 ref 并添加到 configDetailRefs 中
+        this.tableList.forEach(file => {
+          const refName = `ConfigDetail-${file.id}`;
+          // 使用 Vue.set 以确保 refName 是响应式的
+          this.configDetailRefs[file.id] = refName;
+        });
+        // console.log('configDetailRefs内容展示', this.configDetailRefs);
+        // console.log('ref内容展示', this.$refs);
       } catch (error) {
         console.error('获取文件列表失败', error);
       }
@@ -70,12 +87,27 @@ export default {
     openEditeViewer(data) {
       console.log('监听到打开弹窗事件:', data);
       this.currentFileContent = data.content; // 更新当前文件内容
-      this.recordId = data.rowId;
-      this.recordUser = data.rowModifier;
-      this.recordRemark = data.rowRemark;
       this.fileViewerDialogVisible = true; // 显示 EditeViewer.vue 组件的弹窗
+      console.log('监听到打开编辑器：', data.fileId);
+      this.fileId = data.fileId;
+      this.rowId = data.rowId;
+      this.handerUser = data.rowModifier;
+      this.remark = data.rowRemark;
     },
 
+    reloadFileDetail(data) {
+      const refName = this.configDetailRefs[data.fileId];
+      // 使用 refs 获取子组件实例
+      console.log('data.fileId', data.fileId);
+      console.log('refName', refName);
+      const configDetailInstance = this.$refs[refName];
+      if (configDetailInstance) {
+        // 如果找到了对应的子组件实例，调用其方法
+        configDetailInstance.loadTableData();
+      } else {
+        console.error(refName + "对应的子组件实例不存在");
+      }
+    }
   },
 };
 </script>
@@ -91,4 +123,5 @@ export default {
   /* 内边距，根据需要调整 */
   margin-bottom: 10px;
   /* 底部外边距，根据需要调整 */
-}</style>
+}
+</style>

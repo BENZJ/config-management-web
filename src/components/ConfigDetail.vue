@@ -95,7 +95,7 @@ export default {
     editRow(row) {
       // 处理编辑行的逻辑
       console.log('编辑行', row);
-      this.$emit('open-edite-viewer', { content: row.content, rowId: row.id, rowModifier: row.modifier ,rowRemark: row.remark});
+      this.$emit('open-edite-viewer', { content: row.content, fileId: this.fileId, rowId: row.id, rowModifier: row.modifier ,rowRemark: row.remark});
     },
     async deleteRow(row) {
       // 处理删除行的逻辑

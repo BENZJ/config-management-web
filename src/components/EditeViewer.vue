@@ -31,6 +31,9 @@ export default {
     recordId: Number,
     recordName: String,
     recordRemark: String,
+    fileId: Number,
+    handerUser: String,
+    remark: String,
   },
   components: {
     Codemirror,
@@ -99,6 +102,7 @@ export default {
         .then(response => {
           console.log('表单提交成功', response.data);
           // 在成功提交后可以执行其他操作
+          this.$emit('edite-row', { fileId:this.fileId});
         })
         .catch(error => {
           console.error('表单提交失败', error);
