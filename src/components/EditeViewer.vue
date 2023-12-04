@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="internalVisible" title="文件预览" width="80%" :style="{ height: '750px' }" @close="closeDialog">
     <codemirror v-model:value="code" :options="cmOption" :height="400" class="CodeMirror" />
-    <el-form :model="formData" label-width="80px">
+    <el-form v-if="editable" :model="formData" label-width="80px">
       <el-form-item label="人员姓名">
         <el-input v-model="formData.personName" />
       </el-form-item>
@@ -9,7 +9,7 @@
         <el-input v-model="formData.remark" />
       </el-form-item>
     </el-form>
-    <template #footer>
+    <template v-if="editable" #footer>
       <el-button @click="submitForm">保存</el-button>
       <el-button @click="closeDialog">关闭</el-button>
     </template>
@@ -26,6 +26,7 @@ import { post } from '@/utils/http';
 export default {
   name: 'EditeViewer',
   props: {
+    editable: Boolean, // 新添加的可编辑属性
     dialogVisible: Boolean,
     fileContent: String,
     recordId: Number,

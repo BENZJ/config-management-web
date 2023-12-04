@@ -91,6 +91,8 @@ export default {
     },
     previewFile() {
       // 处理预览文件的逻辑
+      console.log("预览按钮触发")
+      this.$emit('open-edite-preview', { fileId: this.fileId});
     },
     editRow(row) {
       // 处理编辑行的逻辑

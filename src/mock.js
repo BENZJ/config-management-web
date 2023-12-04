@@ -27,6 +27,30 @@ const mockData = [
     },
   },
   {
+    url: '/api/getFilePreview',
+    params: (config) => config.params.id,
+    data: (config) => {
+      const id = config.params.id;
+      if (id === 1) {
+        return {
+          code: 200,
+          data: "132131231231\n123123123123\n123123123",
+        };
+      } else if (id === 2) {
+        return {
+          code: 200,
+          data: "absdfsddfdsf\nabsdfsddfdsf\nabsdfsddfdsf",
+        };
+      } else {
+        // 其他情况的处理
+        return {
+          code: 200,
+          data: "bsdfsd\n123123123\ndfdsf\nabsdfsddfdsf\nabsdfsddfdsf",
+        };
+      }
+    },
+  },
+  {
     // getFileList 配置使用函数判断入参
     url: '/api/getFileList',
     params: (config) => config.params.id,

@@ -11,10 +11,11 @@
     <!-- <p>当前的 ID 值是: {{ this.id }}</p> -->
     <div v-for="file in tableList" :key="file.id" class="file-list-item">
       <ConfigDetail :ref="configDetailRefs[file.id]" :fileId=file.id :fileName="file.fileName"
-        @open-edite-viewer="openEditeViewer" />
+        @open-edite-viewer="openEditeViewer" @open-edite-preview="openEditePreview" />
     </div>
     <!-- 文件预览弹框 -->
-    <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" :fileId="fileId" :fileContent="currentFileContent" :recordId="rowId" :recordName="handerUser" :recordRemark="remark"
+    <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" :fileId="fileId" :fileContent="currentFileContent"
+      :recordId="rowId" :recordName="handerUser" :recordRemark="remark" :editable="editable"
       @edite-row="reloadFileDetail" />
   </div>
 </template>
@@ -42,6 +43,7 @@ export default {
       handerUser: String,
       remark: String,
       rowId: Number,
+      editable: Boolean, // 新添加的可编辑属性
     };
   },
   components: {
@@ -83,16 +85,34 @@ export default {
         console.error('获取文件列表失败', error);
       }
     },
+    async getPreviewFile(id){
+      try{
+        console.log("预览文件id:",id)
+        const res = await get('/api/getFilePreview',{'id': id})
+        this.currentFileContent = res.data
+      }catch(error){
+        console.error('获取文件预览失败', error);
+      }
+    },
 
     openEditeViewer(data) {
       console.log('监听到打开弹窗事件:', data);
       this.currentFileContent = data.content; // 更新当前文件内容
       this.fileViewerDialogVisible = true; // 显示 EditeViewer.vue 组件的弹窗
+      this.editable = true;
       console.log('监听到打开编辑器：', data.fileId);
       this.fileId = data.fileId;
       this.rowId = data.rowId;
       this.handerUser = data.rowModifier;
       this.remark = data.rowRemark;
+    },
+
+    async openEditePreview(data){
+      console.log('监听到打开预览弹框事件:', data);
+      await this.getPreviewFile(data.fileId)
+      // this.currentFileContent = data.content; // 更新当前文件内容
+      this.fileViewerDialogVisible = true; // 显示 EditeViewer.vue 组件的弹窗
+      this.editable = false;
     },
 
     reloadFileDetail(data) {
