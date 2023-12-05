@@ -70,6 +70,8 @@ export default {
        // 关闭弹窗时清空 Codemirror 内容
        if (!val) {
         this.code = '';
+        this.formData.personName = '';
+        this.formData.remark = '';
       }
     },
     recordId(val){
