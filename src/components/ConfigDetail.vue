@@ -124,6 +124,7 @@ export default {
     addRow() {
       // 处理添加记录逻辑
       console.log('添加行');
+      this.$emit('add-row', { fileId: this.fileId});
     },
     truncateText(text, maxLength) {
       if (text.length > maxLength) {

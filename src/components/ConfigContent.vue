@@ -11,7 +11,7 @@
     <!-- <p>当前的 ID 值是: {{ this.id }}</p> -->
     <div v-for="file in tableList" :key="file.id" class="file-list-item">
       <ConfigDetail :ref="configDetailRefs[file.id]" :fileId=file.id :fileName="file.fileName"
-        @open-edite-viewer="openEditeViewer" @open-edite-preview="openEditePreview" />
+        @open-edite-viewer="openEditeViewer" @open-edite-preview="openEditePreview" @add-row="addRow"/>
     </div>
     <!-- 文件预览弹框 -->
     <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" :fileId="fileId" :fileContent="currentFileContent"
@@ -113,6 +113,17 @@ export default {
       // this.currentFileContent = data.content; // 更新当前文件内容
       this.fileViewerDialogVisible = true; // 显示 EditeViewer.vue 组件的弹窗
       this.editable = false;
+    },
+
+    addRow(data){
+      console.log('监听到打开预览弹框事件:', data);
+      // this.currentFileContent = data.content; // 更新当前文件内容
+      this.fileId = data.fileId;
+      this.fileViewerDialogVisible = true; // 显示 EditeViewer.vue 组件的弹窗
+      this.editable = true;
+      this.handerUser = '';
+      this.remark = '';
+      this.currentFileContent='';
     },
 
     reloadFileDetail(data) {

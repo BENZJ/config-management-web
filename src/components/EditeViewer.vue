@@ -67,6 +67,10 @@ export default {
     dialogVisible(val) {
       // 在 dialogVisible 发生变化时更新额外的变量
       this.internalVisible = val;
+       // 关闭弹窗时清空 Codemirror 内容
+       if (!val) {
+        this.code = '';
+      }
     },
     recordId(val){
       this.formData.recordId = val;
