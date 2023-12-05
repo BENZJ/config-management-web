@@ -4,7 +4,7 @@
       <el-icon style="margin-right: 10px;" size="25" default="添加文件" @click="showCreateFileDialog">
         <DocumentAdd />
       </el-icon>
-      <el-icon style="margin-right: 10px;" size="25" default="打包下载">
+      <el-icon style="margin-right: 10px;" size="25" default="打包下载" @click="downLoadAll">
         <Download />
       </el-icon>
     </div>
@@ -194,6 +194,9 @@ export default {
       } else {
         console.error(refName + "对应的子组件实例不存在");
       }
+    },
+    downLoadAll(){
+      console.log('下载全部配置');
     }
   },
 };
