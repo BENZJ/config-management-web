@@ -1,10 +1,10 @@
-import { createApp } from 'vue';
+// import { createApp } from 'vue';
 import { instance } from '@/utils/http';
 // import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
 // 创建一个 Vue 实例，用于将 axios 挂载到 app 上
-const app = createApp({});
+// const app = createApp({});
 // app.config.globalProperties.$http = instance;
 
 // 创建一个 MockAdapter 实例
@@ -173,17 +173,18 @@ const mockDataPost = [
   },
 ]
 
+export default function enableMockAdapter() {
+  mockData.forEach(item => {
+    mock.onGet(item.url, item.params).reply((config) => {
+      return [typeof item.data === 'function' ? item.data(config).code : item.data.code, typeof item.data === 'function' ? item.data(config).data : item.data.data];
+    });
+  });
+  mockDataPost.forEach(item => {
+    console.log("mock", item)
+    mock.onPost(item.ur).reply(function (config) {
+      return [item.data(config).code, item.data(config).data];
+      // return [typeof item.data === 'function'? item.data(config).code : item.data.code, typeof item.data === 'function'? item.data(config).data: item.data.data];
+    });
+  });
+}
 // 注册模拟接口
-mockData.forEach(item => {
-  mock.onGet(item.url, item.params).reply((config) => {
-    return [typeof item.data === 'function' ? item.data(config).code : item.data.code, typeof item.data === 'function' ? item.data(config).data : item.data.data];
-  });
-});
-mockDataPost.forEach(item => {
-  console.log("mock", item)
-  mock.onPost(item.ur).reply(function (config) {
-    return [item.data(config).code, item.data(config).data];
-    // return [typeof item.data === 'function'? item.data(config).code : item.data.code, typeof item.data === 'function'? item.data(config).data: item.data.data];
-  });
-});
-export default app;
