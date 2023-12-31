@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 export const instance = axios.create({
-  baseURL: '', // 设置统一的接口前缀
+  baseURL: ' http://localhost:8080', // 设置统一的接口前缀
   timeout: 10000, // 设置超时时间
   headers: {
     'Content-Type': 'application/json', // 设置统一的请求头

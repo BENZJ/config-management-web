@@ -45,8 +45,8 @@ export default {
     },
     async fetchMenuList() {
       try {
-        const res = await get('/api/example', {});
-        this.menuList = res.data;
+        const res = await get('/iteration/list', {});
+        this.menuList = res.data.data;
         console.log('获取迭代列表成功', this.menuList);
       } catch (error) {
         console.error('GET请求失败', error);
@@ -76,7 +76,7 @@ export default {
         if (inputValue) {
           try {
             // 发送 POST 请求创建新的迭代
-            const res = await post('/api/createIteration', { iterationName: inputValue });
+            const res = await post('/iteration/create', { name: inputValue });
             console.log('创建迭代成功', res.data);
             // 请求完成后重新获取迭代列表
             await this.fetchMenuList();

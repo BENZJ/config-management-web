@@ -23,7 +23,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 //   enableMockAdapter();
 // } else {
 //   // 在非开发环境中，正常配置 axios 实例
-//   axios.defaults.baseURL = 'https://api.example.com';
+//   // axios.defaults.baseURL = 'http://192.168.2.37:8080';
 //   // ... 其他 axios 配置
 // }
 app.mount('#app');
