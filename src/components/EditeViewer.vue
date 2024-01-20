@@ -26,6 +26,7 @@ import { post } from '@/utils/http';
 export default {
   name: 'EditeViewer',
   props: {
+    iteratorId: Number,
     editable: Boolean, // 新添加的可编辑属性
     dialogVisible: Boolean,
     fileContent: String,
@@ -68,15 +69,18 @@ export default {
       // 在 dialogVisible 发生变化时更新额外的变量
       this.internalVisible = val;
        // 关闭弹窗时清空 Codemirror 内容
-       if (!val) {
-        this.code = '';
-        this.formData.personName = '';
-        this.formData.remark = '';
-      }
+      //  if (!val) {
+      //   this.code = '';
+      //   this.formData.personName = '';
+      //   this.formData.remark = '';
+      // }
     },
     recordId(val){
       this.formData.recordId = val;
     },
+    // iteratorId(val){
+    //   this.iteratorId = val;
+    // },
     recordRemark(val){
       this.formData.remark = val;
     },
@@ -97,16 +101,21 @@ export default {
     submitForm() {
       // 创建一个用于发送 POST 请求的数据对象
       const postData = {
-        personName: this.formData.personName,
+        fileID: this.fileId,
+        iterationID: this.iterationID,
+        id: this.recordId,
+        updatedBy: this.formData.personName,
         remark: this.formData.remark,
-        extraParam: this.formData.extraParam, // 将额外参数添加到请求中
-        code: this.code, // 将 CodeMirror 编辑的内容添加到请求中
+        content: this.code, // 将 CodeMirror 编辑的内容添加到请求中
         // 如果需要，添加其他属性
       };
 
+      const apiUrl = this.recordId ? '/fileItem/create' : '/fileItem/modify';
+
       // 执行 POST 请求
-      post('/api/submitForm', postData)
+      post(apiUrl, postData)
         .then(response => {
+          console.log('表单内容', postData);
           console.log('表单提交成功', response.data);
           // 在成功提交后可以执行其他操作
           this.$emit('edite-row', { fileId:this.fileId});

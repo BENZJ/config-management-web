@@ -14,7 +14,7 @@
         @open-edite-viewer="openEditeViewer" @open-edite-preview="openEditePreview" @add-row="addRow" />
     </div>
     <!-- 文件预览弹框 -->
-    <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" :fileId="fileId" :fileContent="currentFileContent"
+    <EditeViewer v-model:dialogVisible="fileViewerDialogVisible" :iteratorId="id" :fileId="fileId" :fileContent="currentFileContent"
       :recordId="rowId" :recordName="handerUser" :recordRemark="remark" :editable="editable"
       @edite-row="reloadFileDetail" />
 
@@ -82,9 +82,9 @@ export default {
     async getFileList(id) {
       try {
         console.log('文件列表获取id为', id);
-        const res = await get('/api/getFileList', { 'id': id })
+        const res = await get('/file/list', { 'iterationID': id })
         console.log('文件列表内容', res.data);
-        this.tableList = res.data
+        this.tableList = res.data.data
         console.log('获取文件列表', this.tableList);
 
         // 在获取文件列表后，为每个文件动态创建 ref 并添加到 configDetailRefs 中
@@ -102,8 +102,8 @@ export default {
     async getPreviewFile(id) {
       try {
         console.log("预览文件id:", id)
-        const res = await get('/api/getFilePreview', { 'id': id })
-        this.currentFileContent = res.data
+        const res = await get('/fileItem/preview', { 'fileId': id })
+        this.currentFileContent = res.data.data
       } catch (error) {
         console.error('获取文件预览失败', error);
       }

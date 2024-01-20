@@ -19,19 +19,19 @@
     </div>
 
     <el-table :data="tableData" v-show="showTable" style="width: 100%" ref="myTable">
-      <!-- <el-table-column prop="id" label="编号"></el-table-column> -->
-      <el-table-column label="内容">
+      <el-table-column prop="id" label="编号"></el-table-column>
+      <!-- <el-table-column label="内容">
         <template #default="{ row }">
           <div>{{ truncateText(row.content, 10) }}</div>
         </template>
-      </el-table-column>
-      <el-table-column label="备注">
-        <template #default="{ row }">
+      </el-table-column> -->
+      <el-table-column prop="remark" label="备注">
+        <!-- <template #default="{ row }">
           <div>{{ truncateText(row.remark, 10) }}</div>
-        </template>
+        </template> -->
       </el-table-column>
-      <el-table-column prop="modifier" label="修改人"></el-table-column>
-      <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
+      <el-table-column prop="createdBy" label="创建人"></el-table-column>
+      <el-table-column prop="createdAt" label="创建时间"></el-table-column>
       <el-table-column label="操作" align="center">
         <template #default="{ row }">
           <el-icon class="action-icon" size="20" @click="editRow(row)">
@@ -69,8 +69,8 @@ export default {
         console.log('fileName', this.fileName);
         console.log('fileId', this.fileId);
         console.log('拜访地址', `/api/getFileDate?fileId=${this.fileId}`);
-        const response = await get(`/api/getFileDate`, { fileId: this.fileId });
-        this.tableData = response.data;
+        const response = await get(`/fileItem/list`, { fileId: this.fileId });
+        this.tableData = response.data.data;
         this.showTable = true;
       } catch (error) {
         console.error('获取文件列表失败', error);
